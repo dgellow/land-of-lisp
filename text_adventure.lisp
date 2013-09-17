@@ -18,7 +18,7 @@
 (defun describe-path (edge)
   `(there is a ,(caddr edge) going ,(cadr edge) from here.))
 
-(defun describe-paths (location edge)
+(defun describe-paths (location edges)
   (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
 
 
@@ -38,3 +38,13 @@
   (labels ((describe-obj (object)
 	     `(you see a ,object on the floor.)))
     (apply #'append (mapcar #'describe-obj (objects-at location objects object-locations)))))
+
+
+(defparameter *location* 'living-room)
+
+(defun look ()
+  (append (describe-location *location* *nodes*)
+	  (describe-paths *location* *edges*)
+	  (describe-objects *location* *objects* *object-locations*)))
+
+
