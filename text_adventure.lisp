@@ -42,9 +42,18 @@
 
 (defparameter *location* 'living-room)
 
+
 (defun look ()
+  "Describe the current location."
   (append (describe-location *location* *nodes*)
 	  (describe-paths *location* *edges*)
 	  (describe-objects *location* *objects* *object-locations*)))
 
-
+(defun walk (direction)
+  "Move to the specified location."
+  (let ((next (find direction
+		    (cdr (assoc *location* *edges*)) :key #'caddr)))
+    (if next
+	(progn (setf *location* (car next))
+	       (look))
+	'(you cannot go that way.))))
