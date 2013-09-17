@@ -22,3 +22,19 @@
   (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
 
 
+(defparameter *objects* '(whiskey bucket frog chain))
+
+(defparameter *object-locations* '((whiskey living-room)
+				   (bucket living-room)
+				   (chain garden)
+				   (frog garden)))
+
+(defun objects-at (location objects object-locations)
+  (labels ((at-loc-p (objects)
+	     (eq (cadr (assoc objects object-locations)) location)))
+    (remove-if (lambda (o) (not (at-loc-p o))) objects)))
+
+(defun describe-objects (location objects object-locations)
+  (labels ((describe-obj (object)
+	     `(you see a ,object on the floor.)))
+    (apply #'append (mapcar #'describe-obj (objects-at location objects object-locations)))))
